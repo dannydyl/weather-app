@@ -13,41 +13,46 @@ async function checkWeather(cityName){
   document.querySelector(".cityName").innerHTML = data.name;
   document.querySelector(".temperature").innerHTML = "Temp: " + Math.round(data.main.temp / 10) + "°C";
   document.querySelector(".tempFeelsLike").innerHTML = 'but it feels like '+ Math.round(data.main.feels_like / 10) + "°C";
+  document.querySelector(".wind").innerHTML = data.wind.speed + "m/s";
+
   const weatherIcon = document.querySelector(".weatherIcon");
-  
-  
-  if(data.weather[0].main === 'Coulds'){
-    weatherIcon.src = "images/clouds.png";
+  const windIcon = document.querySelector(".windIcon")
+
+  const showIcon = () => {
     weatherIcon.classList.add('show');
+    windIcon.classList.add('show');
+  };
+  
+  
+  if(data.weather[0].main === 'Clouds'){
+    weatherIcon.src = "images/clouds.png";
   }
   else if(data.weather[0].main === 'Clear'){
     weatherIcon.src = "images/clear.png";
-    weatherIcon.classList.add('show');
   }
   else if(data.weather[0].main === 'Drizzle'){
     weatherIcon.src = "images/drizzle.png";
-    weatherIcon.classList.add('show');
   }
   else if(data.weather[0].main === 'Mist'){
     weatherIcon.src = "images/mist.png";
-    weatherIcon.classList.add('show');
   }
   else if(data.weather[0].main === 'Rain'){
-    weatherIcon.src = "images/rain.png";
-    weatherIcon.classList.add('show');
+    weatherIcon.src = "images/rain.png";  
   }
   else if(data.weather[0].main === 'Snow'){
     weatherIcon.src = "images/snow.png";
-    weatherIcon.classList.add('show');
-  }else{
-    return;
   }
-
+  showIcon();
 }
 
 const searchButton = document.getElementById("searchButton");
 const cityInput = document.getElementById("cityInput");
 
+cityInput.addEventListener("keypress", (event) => {
+  if(event.key === "Enter"){
+    checkWeather(`${cityInput.value}`);
+  }
+});
 
 searchButton.addEventListener("click", () => {
   checkWeather(`${cityInput.value}`);
